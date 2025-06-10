@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="container py-5 mt-5">
+    <div class="card shadow-lg"
+         style="
+            height: 600px; /* increased height */
+            overflow: hidden;
+            background-image: url('{% static 'img/admin.jpg' %}');
+            background-size: cover;
+            background-position: center;
+            border-radius: 0.375rem;
+         ">
+        <!-- Transparent overlay inside the card -->
+        <div style="background-color: rgba(255, 255, 255, 0.85); height: 100%; border-radius: 0.375rem;">
+
+            <!-- Card Header -->
+            <div class="card-header bg-primary text-white text-center">
+                <h2 class="mb-0">Admin Dashboard</h2>
+            </div>
+
+            <!-- Card Body -->
+            <div class="card-body">
+                <!-- Icons Section -->
+                <div class="row d-flex justify-content-center mb-5 pt-5">
+                    <!-- Doctors Icon -->
+                    <div class="col-md-4 mb-5 d-flex justify-content-center">
+                        <div style="position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f1f1f1; border-radius: 50%; padding: 30px; height: 180px; width: 180px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+                            <i class="fas fa-user-md fa-3x" style="color: var(--bs-primary);"></i>
+                            <div style="position: absolute; top: 10px; left: 0; right: 0; font-size: 24px; font-weight: bold; color: var(--bs-primary); text-align: center;">
+                                {{ d }}
+                            </div>
+                            <p class="mt-3" style="font-size: 16px; font-weight: 500; color: var(--bs-primary);">Doctors</p>
+                        </div>
+                    </div>
+
+                    <!-- Patients Icon -->
+                    <div class="col-md-4 mb-5 d-flex justify-content-center">
+                        <div style="position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f1f1f1; border-radius: 50%; padding: 30px; height: 180px; width: 180px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+                            <i class="fas fa-procedures fa-3x" style="color: var(--bs-primary);"></i>
+                            <div style="position: absolute; top: 10px; left: 0; right: 0; font-size: 24px; font-weight: bold; color: var(--bs-primary); text-align: center;">
+                                {{ p }}
+                            </div>
+                            <p class="mt-3" style="font-size: 16px; font-weight: 500; color: var(--bs-primary);">Patients</p>
+                        </div>
+                    </div>
+
+                    <!-- Appointments Icon -->
+                    <div class="col-md-4 mb-5 d-flex justify-content-center">
+                        <div style="position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f1f1f1; border-radius: 50%; padding: 30px; height: 180px; width: 180px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+                            <i class="fas fa-calendar-check fa-3x" style="color: var(--bs-primary);"></i>
+                            <div style="position: absolute; top: 10px; left: 0; right: 0; font-size: 24px; font-weight: bold; color: var(--bs-primary); text-align: center;">
+                                {{ a }}
+                            </div>
+                            <p class="mt-3" style="font-size: 16px; font-weight: 500; color: var(--bs-primary);">Appointments</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons Section -->
+                <div class="d-flex justify-content-center flex-wrap gap-3">
+                    <a href="{% url 'hospital:add_doctor' %}" class="btn btn-primary px-4 mb-3">Add Doctor</a>
+                    <a href="{% url 'hospital:add_patient' %}" class="btn btn-primary px-4 mb-3">Add Patient</a>
+                    <a href="{% url 'hospital:add_appointment' %}" class="btn btn-primary px-4 mb-3">Add Appointment</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4 wow fadeInDown" data-wow-delay="0.1s">Contact Us</h3>
+        <ol class="breadcrumb justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+
+        </ol>
+    </div>
+</div>
+<!-- Header End -->
+
+<!-- Contact Start -->
+<div class="container-fluid contact py-5">
+    <div class="container py-5">
+        <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="sub-style mb-4">
+                <h4 class="sub-title text-white px-3 mb-0">Contact Us</h4>
+            </div>
+            <p class="mb-0 text-black-50">
+                We’re here to help. Reach out to us for any queries or assistance regarding appointments, facilities, or general information.
+            </p>
+        </div>
+
+      <div class="row g-5">
+    <!-- Contact Info Horizontal -->
+    <div class="col-12 wow fadeInUp" data-wow-delay="0.3s">
+        <div class="d-flex flex-wrap justify-content-between text-center text-md-start">
+            <!-- Address -->
+            <div class="flex-fill p-3">
+                <div class="bg-white d-flex align-items-center justify-content-center mb-3" style="width: 90px; height: 90px; border-radius: 50px; margin: 0 auto;">
+                    <i class="fa fa-map-marker-alt fa-2x text-primary"></i>
+                </div>
+                <h4 class="text-dark">Address</h4>
+                <p class="mb-0 text-muted">Aluva, Ernakulam, Kerala, India</p>
+            </div>
+
+            <!-- Phone -->
+            <div class="flex-fill p-3">
+                <div class="bg-white d-flex align-items-center justify-content-center mb-3" style="width: 90px; height: 90px; border-radius: 50px; margin: 0 auto;">
+                    <i class="fa fa-phone-alt fa-2x text-primary"></i>
+                </div>
+                <h4 class="text-dark">Phone</h4>
+                <p class="mb-0 text-muted">
+                    <a href="tel:+919876543210" class="text-muted text-decoration-none">+91 98765 43210</a>
+                </p>
+                <p class="mb-0 text-muted">
+                    <a href="tel:+919876543211" class="text-muted text-decoration-none">+91 98765 43211</a>
+                </p>
+            </div> <!-- **Close Phone div here** -->
+
+            <!-- Email -->
+            <div class="flex-fill p-3">
+                <div class="bg-white d-flex align-items-center justify-content-center mb-3" style="width: 90px; height: 90px; border-radius: 50px; margin: 0 auto;">
+                    <i class="fa fa-envelope-open fa-2x text-primary"></i>
+                </div>
+                <h4 class="text-dark">Email</h4>
+                <p class="mb-0 text-muted">
+                    <a href="mailto:healthnet@gmail.com" class="text-muted text-decoration-none">healthnet@gmail.com</a>
+                </p>
+                <p class="mb-0 text-muted">
+                    <a href="mailto:support@healthnet.com" class="text-muted text-decoration-none">support@healthnet.com</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <!-- Map and Socials -->
+<!--            <div class="col-12 wow fadeInUp" data-wow-delay="0.5s">-->
+<!--                <div class="d-flex justify-content-center mb-4">-->
+<!--                    <a class="btn btn-lg-square btn-light rounded-circle mx-2" href="#"><i class="fab fa-facebook-f"></i></a>-->
+<!--                    <a class="btn btn-lg-square btn-light rounded-circle mx-2" href="#"><i class="fab fa-twitter"></i></a>-->
+<!--                    <a class="btn btn-lg-square btn-light rounded-circle mx-2" href="#"><i class="fab fa-instagram"></i></a>-->
+<!--                    <a class="btn btn-lg-square btn-light rounded-circle mx-2" href="#"><i class="fab fa-linkedin-in"></i></a>-->
+<!--                </div>-->
+                <div class="rounded">
+                    <iframe class="rounded w-100"
+                        style="height: 500px;"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930.1951885742334!2d76.34975057459486!3d10.106988889982572!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b08075538d7c4f7%3A0xb16962676d23e13f!2sAluva%2C%20Kerala%20683011!5e0!3m2!1sen!2sin!4v1716367992142!5m2!1sen!2sin"
+                        loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact End -->
+
+{% endblock %}

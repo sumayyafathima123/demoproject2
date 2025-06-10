@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!--<div class="container py-5 mt-5 d-flex justify-content-center" style="background-image: url('{% static 'img/addapp1.jpg' %}'); background-size: 125% auto; background-position: center; margin-top: 100px !important;">-->
+
+<!--    <div class="card shadow" style="width: 100%; max-width: 650px; background-color: rgba(255, 255, 255, 0.9);">-->
+<div class="w-200 py-5 mt-5 d-flex justify-content-center" style=" width: 100%; margin: auto; background-image: url('{% static 'img/addapp1.jpg' %}'); background-size: 100% auto; background-repeat: no-repeat; background-position: center;">
+    <div class="card shadow" style="width: 150%; max-width: 650px; background-color: rgba(255, 255, 255, 0.9);">
+
+        <!-- Card Header with Background Color -->
+        <div class="card-header text-center" style="background-color: var(--bs-primary); color: white; padding: 10px;">
+            <h2>Add Appointment</h2>
+        </div>
+
+        <div class="card-body">
+            <!-- Display Messages (Success or Error) -->
+
+                <!-- Dynamic Doctor Dropdown -->  {% if messages %}
+                <div class="alert alert-danger">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Add Appointment Form -->
+            <form method="POST" class="w-100 px-3">
+                {% csrf_token %}
+
+                <!-- Doctor Dropdown -->
+                <div class="mb-3">
+                    <label for="speciality" class="form-label">Specialization</label>
+                    <select class="form-select" id="speciality" name="speciality" required>
+                        <option value="">Select Specialization</option>
+                        {% for speciality in specialities %}
+                            <option value="{{ speciality.id }}">{{ speciality.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="doctor" class="form-label">Doctor</label>
+                    <select class="form-select" id="doctor" name="doctor" required>
+                        <option value="">Select Doctor</option>
+                    </select>
+                </div>
+
+                <!-- Patient Dropdown -->
+                <div class="mb-3">
+                    <label for="patient" class="form-label">Patient</label>
+                    <select class="form-select" id="patient" name="patient" required>
+                        <option value="">Select Patient</option>
+                        {% for patient in patients %}
+                            <option value="{{ patient.id }}">{{ patient.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Date Picker -->
+                <div class="mb-3">
+                    <label for="date" class="form-label">Appointment Date</label>
+                    <input type="date" class="form-control" id="date" name="date" required>
+                </div>
+
+                <!-- Time Picker -->
+                <div class="mb-3">
+                    <label for="time" class="form-label">Appointment Time</label>
+                    <input type="time" class="form-control" id="time" name="time" required>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Add Appointment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+<script>
+    // When the user selects a specialization, fetch the corresponding doctors
+    $('#speciality').change(function () {
+        var speciality_id = $(this).val();
+
+        if (speciality_id) {
+            $.ajax({
+                url: '{% url "hospital:get_doctors_by_speciality" %}',
+                data: {
+                    'speciality_id': speciality_id
+                },
+                dataType: 'json',
+                success: function (data) {
+                    // Clear the previous options in the doctor dropdown
+                    $('#doctor').empty().append('<option value="">Select Doctor</option>');
+
+                    // Add new options
+                    $.each(data.doctors, function (key, value) {
+                        $('#doctor').append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                }
+            });
+        } else {
+            // Clear doctor dropdown if no specialization is selected
+            $('#doctor').empty().append('<option value="">Select Doctor</option>');
+        }
+    });
+</script>
+
+{% endblock %}

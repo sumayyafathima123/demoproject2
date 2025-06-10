@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>HealthNet - Hospital Management System</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries -->
+    <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+    <!-- Styles -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+
+
+
+
+    <style>
+        body {
+            padding-top: 0; /* remove unnecessary top padding */
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <!-- Spinner (optional) -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Sticky Wrapper -->
+    <div class="sticky-top">
+
+        <!-- Topbar Start -->
+       <div class="container-fluid bg-dark px-5" style="height: 60px; position: relative; z-index: 1031;">
+
+            <div class="row gx-0 align-items-center" style="height: 45px;">
+                <div class="col-lg-8 text-center text-lg-start mb-lg-0">
+                    <div class="d-flex flex-wrap">
+                        <a href="#" class="text-light me-4">
+                            <i class="fas fa-phone-alt text-primary me-2"></i>+01234567890
+                        </a>
+                        <a href="#" class="text-light me-0">
+                            <i class="fas fa-envelope text-primary me-2"></i>healthnet@gmail.com
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center text-lg-end">
+                    <div class="d-flex align-items-center justify-content-end">
+                        <a href="#" class="btn btn-light btn-square border rounded-circle nav-fill me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="btn btn-light btn-square border rounded-circle nav-fill me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="btn btn-light btn-square border rounded-circle nav-fill me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="btn btn-light btn-square border rounded-circle nav-fill me-0"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Topbar End -->
+
+
+        <nav class="navbar navbar-expand-lg bg-white navbar-light p-0" style="border-bottom: 2px solid #ccc; position: relative; z-index: 1032;">
+    <a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <h2 class="m-0 text-primary">HealthNet</h2>
+    </a>
+    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto py-0">
+            <!-- Always visible -->
+            <a href="{% url 'home' %}" class="nav-item nav-link">
+                <i class="fas fa-home me-2"></i>Home
+            </a>
+
+            {% if request.user.is_authenticated %}
+                <!-- Show to all logged-in users -->
+                {% if request.user.is_staff %}
+                    <!-- Admin Only: Patients -->
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fas fa-procedures me-2"></i>Patients
+                        </a>
+                        <div class="dropdown-menu m-0">
+                            <a href="{% url 'hospital:add_patient' %}" class="dropdown-item">Add Patient</a>
+                            <a href="{% url 'hospital:view_patient' %}" class="dropdown-item">View Patients</a>
+                        </div>
+                    </div>
+
+                    <!-- Admin Only: Doctors -->
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-md me-2"></i>Doctors
+                        </a>
+                        <div class="dropdown-menu m-0">
+                            <a href="{% url 'hospital:add_doctor' %}" class="dropdown-item">Add Doctor</a>
+                            <a href="{% url 'hospital:view_doctor' %}" class="dropdown-item">View Doctors</a>
+                        </div>
+                    </div>
+
+                    <!-- Admin Only: Appointments -->
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fas fa-calendar-check me-2"></i>Appointments
+                        </a>
+                        <div class="dropdown-menu m-0">
+                            <a href="{% url 'hospital:add_appointment' %}" class="dropdown-item">Add Appointment</a>
+                            <a href="{% url 'hospital:view_appointment' %}" class="dropdown-item">View Appointments</a>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Logout for all logged-in users -->
+                <a href="{% url 'logout_view' %}" class="nav-item nav-link">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </a>
+
+                <!-- Pages Dropdown: Only if logged in -->
+             {% if request.user.is_authenticated %}
+    <div class="nav-item dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            <i class="fas fa-copy me-2"></i>Pages
+        </a>
+        <div class="dropdown-menu m-0">
+            {% if request.user.is_staff %}
+                <a href="{% url 'home' %}" class="dropdown-item">Home</a>
+                <a href="{% url 'hospital:view_patient' %}" class="dropdown-item">View Patients</a>
+                <a href="{% url 'hospital:add_patient' %}" class="dropdown-item">Add Patients</a>
+                <a href="{% url 'hospital:view_doctor' %}" class="dropdown-item">View Doctors</a>
+                <a href="{% url 'hospital:add_doctor' %}" class="dropdown-item">Add Doctors</a>
+                <a href="{% url 'hospital:view_appointment' %}" class="dropdown-item">View Appointments</a>
+                <a href="{% url 'hospital:add_appointment' %}" class="dropdown-item">Add Appointments</a>
+                <a href="{% url 'hospital:contact' %}" class="dropdown-item">Contact Us</a>
+            {% else %}
+                <a href="{% url 'home' %}" class="dropdown-item">Home</a>
+                <a href="{% url 'hospital:contact' %}" class="dropdown-item">Contact Us</a>
+            {% endif %}
+        </div>
+    </div>
+{% else %}
+    <!-- Show login and registration links for guests -->
+    <a href="{% url 'login_view' %}" class="nav-item nav-link">
+        <i class="fas fa-sign-in-alt me-2"></i>Login
+    </a>
+
+    <a href="{% url 'patient_register' %}" class="nav-item nav-link">
+        <i class="fas fa-procedures me-2"></i>Patient Register
+    </a>
+{% endif %}
+
+<!--&lt;!&ndash; Always visible &ndash;&gt;-->
+<!--<a href="{% url 'hospital:contact' %}" class="nav-item nav-link">-->
+<!--    <i class="fas fa-envelope me-2"></i>Contact Us-->
+<!--</a>-->
+
+        </div>
+    </div>
+            {% else %}
+                <!-- Show login for guests -->
+                <a href="{% url 'login_view' %}" class="nav-item nav-link">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+
+            <a href="{% url 'patient_register' %}" class="nav-item nav-link">
+                    <i class="fas fa-procedures me-22"></i>Patient Register
+                </a>
+
+
+
+            {% endif %}
+
+            <!-- Always visible -->
+            <a href="{% url 'hospital:contact' %}" class="nav-item nav-link">
+                <i class="fas fa-envelope me-2"></i>Contact Us
+            </a>
+        </div>
+
+<!--        <a href="#" class="btn btn-primary rounded-pill text-white py-2 px-4 ms-4">Book Appointment</a>-->
+    </div>
+</nav>
+
+
+<!--        &lt;!&ndash; Navbar Start &ndash;&gt;-->
+<!--        <nav class="navbar navbar-expand-lg bg-white navbar-light p-0">-->
+<!--            <a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">-->
+<!--                <h2 class="m-0 text-primary">HealthNet</h2>-->
+<!--            </a>-->
+<!--            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">-->
+<!--                <span class="navbar-toggler-icon"></span>-->
+<!--            </button>-->
+
+<!--           <div class="collapse navbar-collapse" id="navbarCollapse">-->
+<!--    <div class="navbar-nav ms-auto py-0">-->
+<!--        &lt;!&ndash; Always visible &ndash;&gt;-->
+<!--        <a href="{% url 'home' %}" class="nav-item nav-link">-->
+<!--            <i class="fas fa-home me-2"></i>Home-->
+<!--        </a>-->
+
+<!--        {% if request.user.is_authenticated %}-->
+<!--            &lt;!&ndash; Show to all logged-in users &ndash;&gt;-->
+<!--            {% if request.user.is_staff %}-->
+<!--                &lt;!&ndash; Only for staff (admin/doctor) &ndash;&gt;-->
+<!--                 &lt;!&ndash; Admin Only: Patients &ndash;&gt;-->
+<!--            <div class="nav-item dropdown">-->
+<!--                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">-->
+<!--                    <i class="fas fa-procedures me-2"></i>Patients-->
+<!--                </a>-->
+<!--                <div class="dropdown-menu m-0">-->
+<!--                    <a href="{% url 'hospital:add_patient' %}" class="dropdown-item">Add Patient</a>-->
+<!--                    <a href="{% url 'hospital:view_patient' %}" class="dropdown-item">View Patients</a>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Admin Only: Doctors &ndash;&gt;-->
+<!--            <div class="nav-item dropdown">-->
+<!--                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">-->
+<!--                    <i class="fas fa-user-md me-2"></i>Doctors-->
+<!--                </a>-->
+<!--                <div class="dropdown-menu m-0">-->
+<!--                    <a href="{% url 'hospital:add_doctor' %}" class="dropdown-item">Add Doctor</a>-->
+<!--                    <a href="{% url 'hospital:view_doctor' %}" class="dropdown-item">View Doctors</a>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Admin Only: Appointments &ndash;&gt;-->
+<!--            <div class="nav-item dropdown">-->
+<!--                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">-->
+<!--                    <i class="fas fa-calendar-check me-2"></i>Appointments-->
+<!--                </a>-->
+<!--                <div class="dropdown-menu m-0">-->
+<!--                    <a href="{% url 'hospital:add_appointment' %}" class="dropdown-item">Add Appointment</a>-->
+<!--                    <a href="{% url 'hospital:view_appointment' %}" class="dropdown-item">View Appointments</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            {% endif %}-->
+
+<!--            &lt;!&ndash; Logout for all logged-in users &ndash;&gt;-->
+<!--            <a href="{% url 'logout_view' %}" class="nav-item nav-link">-->
+<!--                <i class="fas fa-sign-out-alt me-2"></i>Logout-->
+<!--            </a>-->
+
+<!--            &lt;!&ndash; Pages Dropdown: Only if logged in &ndash;&gt;-->
+<!--            <div class="nav-item dropdown">-->
+<!--                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">-->
+<!--                    <i class="fas fa-copy me-2"></i>Pages-->
+<!--                </a>-->
+<!--                <div class="dropdown-menu m-0">-->
+<!--                    <a href="#" class="dropdown-item">Appointment</a>-->
+<!--                    <a href="#" class="dropdown-item">Features</a>-->
+<!--                    <a href="#" class="dropdown-item">Our Blog</a>-->
+<!--                    <a href="#" class="dropdown-item">Our Team</a>-->
+<!--                    <a href="#" class="dropdown-item">Testimonial</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        {% else %}-->
+<!--            &lt;!&ndash; Show login for guests &ndash;&gt;-->
+<!--            <a href="{% url 'login_view' %}" class="nav-item nav-link">-->
+<!--                <i class="fas fa-sign-in-alt me-2"></i>Login-->
+<!--            </a>-->
+<!--        {% endif %}-->
+
+<!--        &lt;!&ndash; Always visible &ndash;&gt;-->
+<!--        <a href="{% url 'hospital:contact' %}" class="nav-item nav-link">-->
+<!--            <i class="fas fa-envelope me-2"></i>Contact Us-->
+<!--        </a>-->
+<!--    </div>-->
+
+<!--    <a href="#" class="btn btn-primary rounded-pill text-white py-2 px-4 ms-4">Book Appointment</a>-->
+<!--</div>-->
+
+<!--    </div>-->
+    <!-- Sticky Wrapper End -->
+
+    <!-- Page Content -->
+    <div class="container-fluid">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    {% block extra_scripts %}{% endblock %}
+      <!-- Feature Start -->
+
+<div class="container-fluid feature py-5">
+    <div class="container py-5">
+        <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="sub-style">
+                <h4 class="sub-title px-3 mb-0">Why Choose Us</h4>
+            </div>
+            <h1 class="display-3 mb-4">Why Choose Us? Get Your Life Style Back</h1>
+            <p class="mb-0">
+                At HealthNet, we aim to simplify and streamline the healthcare experience for both patients and medical staff. Our system offers an all-in-one platform to manage appointments, patient records, doctor availability, and more — all with just a few clicks. Designed with modern healthcare needs in mind, HealthNet enhances efficiency, reduces paperwork, and ensures that care remains at the heart of every interaction. Choose us for a smarter, faster, and more secure healthcare solution.
+            </p>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body text-center">
+        <i class="fas fa-briefcase-medical fa-3x text-primary mb-3"></i>
+        <h5 class="card-title">Licensed Professionals</h5>
+        <p class="card-text">Certified doctors and staff delivering ethical and expert care.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body text-center">
+        <i class="fas fa-user-cog fa-3x text-primary mb-3"></i>
+        <h5 class="card-title">Personalized Care</h5>
+        <p class="card-text">Tailored treatments based on your individual health needs.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body text-center">
+        <i class="fas fa-heartbeat fa-3x text-primary mb-3"></i>
+        <h5 class="card-title">Goal-Oriented Treatments</h5>
+        <p class="card-text">Focused care plans to help you reach your health goals.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body text-center">
+        <i class="fas fa-network-wired fa-3x text-primary mb-3"></i>
+        <h5 class="card-title">Widespread Network</h5>
+        <p class="card-text">Seamless access to hospitals and specialists across regions.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body text-center">
+        <i class="fas fa-hospital fa-3x text-primary mb-3"></i>
+        <h5 class="card-title">Modern Facilities</h5>
+        <p class="card-text">Clean, comforting environment with advanced equipment.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body text-center">
+        <i class="fas fa-user-nurse fa-3x text-primary mb-3"></i>
+        <h5 class="card-title">Experienced Staff</h5>
+        <p class="card-text">Caring, skilled professionals ready to support your journey.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body text-center">
+        <i class="fas fa-headset fa-3x text-primary mb-3"></i>
+        <h5 class="card-title">24/7 Support</h5>
+        <p class="card-text">Assistance anytime with round-the-clock availability.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body text-center">
+        <i class="fas fa-calendar-check fa-3x text-primary mb-3"></i>
+        <h5 class="card-title">Easy Appointments</h5>
+        <p class="card-text">Quick and simple online appointment booking system.</p>
+      </div>
+    </div>
+  </div>
+        </div>
+    </div>
+
+
+
+<!--Feature Ends-->
+
+
+
+  <!-- Footer Start -->
+<div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">
+    <div class="container py-5">
+        <div class="row g-5">
+            <!-- About HealthNet -->
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="footer-item d-flex flex-column">
+                    <h4 class="text-white mb-4"><i class="fas fa-star-of-life me-3"></i>HealthNet</h4>
+                    <p class="text-white-50">
+                        HealthNet is committed to delivering patient-centric healthcare with compassion, innovation, and integrity. We believe in making healthcare simple, efficient, and accessible to all.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Our Values -->
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="footer-item d-flex flex-column">
+                    <h4 class="mb-4 text-white">Our Core Values</h4>
+                    <p class="text-white-50">• Compassion in care</p>
+                    <p class="text-white-50">• Integrity in action</p>
+                    <p class="text-white-50">• Innovation in service</p>
+                    <p class="text-white-50">• Excellence in outcomes</p>
+                </div>
+            </div>
+
+            <!-- Inspirational Quote -->
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="footer-item d-flex flex-column">
+                    <h4 class="mb-4 text-white">Inspiration</h4>
+                    <p class="text-white-50 fst-italic">
+                        "The best way to find yourself is to lose yourself in the service of others." <br> – Mahatma Gandhi
+                    </p>
+                </div>
+            </div>
+
+            <!-- Acknowledgment -->
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="footer-item d-flex flex-column">
+                    <h4 class="mb-4 text-white">Thank You</h4>
+                    <p class="text-white-50">
+                        Thank you for trusting HealthNet. We are honored to be a part of your wellness journey. Together, we strive for a healthier tomorrow.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+
+<!-- Footer Bottom -->
+<div class="container-fluid copyright py-3 bg-dark">
+    <div class="container text-center">
+        <small class="text-white-50">
+            © 2025 HealthNet
+        </small>
+    </div>
+</div>
+
+
+                    </div>
+                    <div class="col-md-6 text-center text-md-end text-white">
+                        <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
+                        <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
+                        <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Copyright End -->
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-primary btn-lg-square back-to-top"><i class="fa fa-arrow-up"></i></a>
+
+
+
+
+    <!-- JS Files -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'lib/wow/wow.min.js' %}"></script>
+    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+<!-- DataTables core -->
+<script src="https://cdn.datatables.net/2.3.1/js/dataTables.js"></script>
+
+<!-- Buttons -->
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/dataTables.buttons.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.html5.min.js"></script>
+
+<!-- Export dependencies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+
+</body>
+</html>

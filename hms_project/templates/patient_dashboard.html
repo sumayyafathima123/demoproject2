@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="w-200 py-5 mt-5 d-flex justify-content-center" style=" width: 100%; margin: auto; background-image: url('{% static 'img/addapp1.jpg' %}'); background-size: 100% auto; background-repeat: no-repeat; background-position: center;">
+    <div class="card shadow" style="width: 150%; max-width: 650px; background-color: rgba(255, 255, 255, 0.9);">
+
+        <div class="card-header text-center" style="background-color: var(--bs-primary); color: white;">
+            <h2>Book Appointment</h2>
+        </div>
+
+        <div class="card-body">
+            {% if messages %}
+                <div class="alert alert-danger">
+                   {% if message.tags == "error" %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endif %}
+                </div>
+            {% endif %}
+
+            <form method="POST" class="w-100 px-3">
+                {% csrf_token %}
+
+                <!-- Specialization Dropdown -->
+                <div class="mb-3">
+                    <label for="speciality" class="form-label">Specialization</label>
+                    <select class="form-select" id="speciality" name="speciality" required>
+                        <option value="">Select Specialization</option>
+                        {% for speciality in specialities %}
+                            <option value="{{ speciality.id }}">{{ speciality.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Doctor Dropdown (Dynamic) -->
+                <div class="mb-3">
+                    <label for="doctor" class="form-label">Doctor</label>
+                    <select class="form-select" id="doctor" name="doctor" required>
+                        <option value="">Select Doctor</option>
+                    </select>
+                </div>
+
+                <!-- Date Picker -->
+                <div class="mb-3">
+                    <label for="date" class="form-label">Appointment Date</label>
+                    <input type="date" class="form-control" id="date" name="date" required>
+                </div>
+
+                <!-- Time Picker -->
+                <div class="mb-3">
+                    <label for="time" class="form-label">Appointment Time</label>
+                    <input type="time" class="form-control" id="time" name="time" required>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Book Appointment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+<script>
+    $('#speciality').change(function () {
+        var speciality_id = $(this).val();
+
+        if (speciality_id) {
+            $.ajax({
+                url: '{% url "hospital:get_doctors_by_speciality" %}',
+                data: {
+                    'speciality_id': speciality_id
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $('#doctor').empty().append('<option value="">Select Doctor</option>');
+                    $.each(data.doctors, function (key, value) {
+                        $('#doctor').append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                }
+            });
+        } else {
+            $('#doctor').empty().append('<option value="">Select Doctor</option>');
+        }
+    });
+</script>
+{% endblock %}

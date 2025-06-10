@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh; margin-top: 80px;">
+    <div class="card shadow" style="width: 100%; max-width: 600px; border-radius: 10px; background-color: #fff;">
+
+        <!-- Heading -->
+        <div class="text-center mb-4 py-3" style="background-color: var(--bs-primary); border-top-left-radius: 10px; border-top-right-radius: 10px;">
+            <h3 class="mb-0" style="color: black;">Patient Registration</h3>
+        </div>
+
+        <!-- Display messages -->
+        {% if messages %}
+            <div class="alert alert-danger px-4">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Registration Form -->
+        <form method="POST" class="px-4 pb-4">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input name="name" type="text" class="form-control" required>
+            </div>
+
+             <div class="mb-3">
+                <label class="form-label">UserName</label>
+                <input name="username" type="text" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <select name="gender" class="form-select" required>
+                    <option value="">Select Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Contact</label>
+                <input name="mobile" type="text" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Address</label>
+                <input name="address" type="text" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input name="email" type="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Date of Birth</label>
+                <input name="dob" type="date" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input name="password" type="password" class="form-control" required>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary px-4">Register</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

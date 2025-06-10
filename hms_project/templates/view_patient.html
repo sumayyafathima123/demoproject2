@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5 mt-5 d-flex justify-content-center" style="margin-top: 90px;"> <!-- Push content below navbar -->
+    <div class="card shadow" style="width: 100%; max-width: 1200px;"> <!-- Set a max width for the card -->
+
+        <!-- Card Header with Background Color -->
+        <div class="card-header text-center" style="background-color: var(--bs-primary); color: white; padding: 10px;">
+            <h2>Patients List</h2>
+        </div>
+
+        <div class="card-body">
+            <!-- Display Messages (Error Only) -->
+            {% if messages %}
+                <div class="alert alert-danger">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if pat %}
+                <div class="table-responsive">
+                    <table id="doctorTable" class="table table-bordered table-striped text-center align-middle" style="width: 100%;">  <!-- Set table width to 100% -->
+                        <thead class="table-primary">
+                            <tr>
+                                <th >Patient ID</th>
+                                <th style="width: 20%;">Name</th>
+                                <th style="width: 5%;">Gender</th>
+                                <th style="width: 10%;">Mobile</th>
+                                <th style="width: 20%;">Address</th>
+                                <th style="width: 15%;">Email</th>
+                                <th style="width: 20%;">DOB</th>
+                                <th style="width: 10%;">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for patient in pat %}
+                            <tr>
+                                <td>{{ patient.id }}</td>
+                                <td>{{ patient.name }}</td>
+                                <td>{{ patient.gender }}</td>
+                                <td>{{ patient.mobile }}</td>
+                                <td>{{ patient.address }}</td>
+                                <td>{{ patient.email }}</td>
+                                <td>{{ patient.dob }}</td>
+                                <td>
+                                    <a href="{% url 'hospital:delete_patient' patient.id %}" class="btn btn-danger" onclick="return confirm('Do you really want to delete this patient?');">Delete</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted text-center mb-0">No patients found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.datatables.net/2.3.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.html5.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $('#doctorTable').DataTable({
+      dom: 'Bfrtip',  // This is needed for buttons
+      buttons: ['copy', 'excel', 'pdf'],
+      columnDefs: [
+        { targets: 7, visible: true }  // Ensure the 'Delete' column (8th column) is visible
+      ]
+    });
+  });
+</script>
+
+<style>
+  /* Move the search bar to the right */
+  .dataTables_filter, .dt-search {
+    float: right !important;
+    margin-right: 20px !important;
+    padding-right: 10px !important;
+    text-align: right !important;
+    margin-top: 10px !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* Space above the table */
+  #doctorTable_wrapper {
+    margin-top: 20px;  /* Adds space above the DataTable */
+  }
+
+  /* Adjust the position of the export buttons */
+  .dt-buttons {
+    float: left !important;
+    margin-top: 10px !important;
+  }
+
+  /* Adjust the width of the table */
+  #doctorTable {
+    width: 100%;  /* Table takes full width of its parent */
+    margin: 0 auto;  /* Center the table */
+  }
+</style>
+{% endblock %}

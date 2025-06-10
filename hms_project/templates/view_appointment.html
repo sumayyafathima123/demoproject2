@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white text-center">
+            <h3>All Appointments</h3>
+        </div>
+        <div class="card-body">
+            {% if appointments %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped text-center align-middle" id="appointmentTable">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Speciality</th>
+                                <th>Patient</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for app in appointments %}
+                            <tr>
+                                <td>{{ app.doctor.name }}</td>
+                                <td>{{ app.doctor.speciality.name }}</td>
+                                <td>{{ app.patient.name }}</td>
+                                <td>{{ app.date|date:"d M Y" }}</td>
+                                <td>{{ app.time|time:"h:i A" }}</td>
+                                <td>
+                                     <a href="{% url 'hospital:delete_appointment' app.id %}" class="btn btn-danger" onclick="return confirm('Do you really want to delete this doctor?');">Delete</a>
+                                 </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted text-center">No appointments found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- DataTables core -->
+<script src="https://cdn.datatables.net/2.3.1/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.1/css/jquery.dataTables.min.css">
+
+<!-- DataTables Buttons extension -->
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.html5.min.js"></script>
+
+<!-- File export support -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+<!-- Initialize DataTable -->
+<script>
+  $(document).ready(function () {
+    $('#appointmentTable').DataTable({
+      dom: 'Bfrtip',  // This is needed for buttons
+      buttons: ['copy', 'excel', 'pdf'],
+      columnDefs: [
+<!--        { targets: 7, visible: true }  // Ensure the 'Delete' column (8th column) is visible-->
+      ]
+    });
+  });
+</script>
+
+<!-- Move search bar to the left -->
+<style>
+    /* Move the search bar to the right */
+  .dataTables_filter, .dt-search {
+    float: right !important;        /* Move search bar to the right */
+    margin-right: 20px !important;  /* Add space from the right edge */
+    padding-right: 10px !important; /* Optional padding */
+    text-align: right !important;   /* Align text inside the search bar */
+    margin-top: 10px !important;    /* Reduce space above the search bar */
+    margin-bottom: 20px !important; /* Adjust the bottom margin to reduce excessive space */
+  }
+
+    /* Adjust the position of the export buttons */
+  .dt-buttons {
+    float: left !important; /* Align the buttons to the left */
+    margin-top: 10px !important; /* Move buttons a little lower (adjust as needed) */
+  }
+
+
+
+</style>
+{% endblock %}

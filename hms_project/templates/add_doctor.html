@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+  body {
+    padding-top: 80px;  /* Adjust for navbar height if needed */
+  }
+  .container {
+    margin-top: 200px; /* Push content down */
+    padding: 0;
+  }
+  .card {
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .form-control, .form-select {
+    width: 100%;
+  }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+
+<div class="w-200 py-5 mt-5 d-flex justify-content-center" style=" width: 100%; margin: auto; background-image: url('{% static 'img/adddoc.jpg' %}'); background-size: 100% auto; background-repeat: no-repeat; background-position: center;">
+    <div class="card shadow" style="width: 150%; max-width: 650px; background-color: rgba(255, 255, 255, 0.9);">
+
+<!--<div class="container py-5 d-flex justify-content-center"-->
+<!--     style="background-image: url('{% static 'img/adddoc.jpg' %}');-->
+<!--            background-size: 120% auto;-->
+<!--            background-position: center;-->
+<!--            margin-top: 100px;">-->
+<!--    <div class="card shadow" style="width: 100%; max-width: 600px; background-color: rgba(255, 255, 255, 0.8);">-->
+
+        <div class="card-header text-center" style="background-color: var(--bs-primary); color: white; padding: 10px;">
+            <h2>Add Doctor</h2>
+        </div>
+
+        <div class="card-body">
+            {% if messages %}
+                <div class="alert alert-danger">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST" class="w-100 px-3">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name" class="form-label">Doctor Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="speciality" class="form-label">Specialization</label>
+                    <select class="form-select" id="speciality" name="speciality" required>
+                        <option value="">Select Specialization</option>
+                        {% for speciality in specialities %}
+                            <option value="{{ speciality.id }}">{{ speciality.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="contact" class="form-label">Contact Number</label>
+                    <input type="text" class="form-control" id="contact" name="contact" required>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
